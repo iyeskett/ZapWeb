@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ZapWeb.Models;
 
 namespace ZapWeb.Data
 {
@@ -7,5 +8,9 @@ namespace ZapWeb.Data
         public ZapWebContext(DbContextOptions options) : base(options)
         {
         }
+
+        public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Grupo> Grupos { get; set; }
+        public DbSet<Mensagem> Mensagens { get; set; }
     }
 }
