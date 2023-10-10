@@ -35,7 +35,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Conversacao}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 // RPC
 app.MapHub<ZapWebHub>("/ZapWebHub");

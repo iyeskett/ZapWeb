@@ -13,18 +13,20 @@
     ViewData["Title"] = "Entrar";
 }
 
-<div class="container-login">
+<div class="container-login" id="form-login">
     <img src="/imagem/logo.png" />
     <h1>ZapWeb</h1>
     <div class="container-form">
-        <input type="text" placeholder="E-mail" />
+        <input type="text" placeholder="E-mail" id="email"/>
         <br />
-        <input type="text" placeholder="Senha" />
+        <input type="text" placeholder="Senha" id="senha" />
 
         <div class="container-button">
-            <input type="button" value="ACESSAR" />
-            <input type="button" value="CADASTRAR" />
+            <input type="button" value="ACESSAR" id="btnAcessar" />
+            <input type="button" value="CADASTRAR" asp-action="Cadastro"/>
         </div>
+        
+        <span id="mensagem"></span>
     </div>
 </div>
 

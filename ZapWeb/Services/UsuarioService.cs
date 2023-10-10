@@ -13,11 +13,11 @@ namespace ZapWeb.Services
             _context = context;
         }
 
-        public async Task<Usuario?> GetUsuarioAsync(string email) => await _context.Usuarios.FirstOrDefaultAsync(_ => _.Email == email);
+        public async Task<Usuario?> GetUsuarioByEmailAsync(string email) => await _context.Usuarios.FirstOrDefaultAsync(_ => _.Email == email);
 
         public async Task<bool> InsertUsuario(Usuario usuario)
         {
-            Usuario? dbUsuario = await GetUsuarioAsync(usuario.Email);
+            Usuario? dbUsuario = await GetUsuarioByEmailAsync(usuario.Email);
             if (dbUsuario != null)
                 throw new Exception("Email já cadastrado.");
 

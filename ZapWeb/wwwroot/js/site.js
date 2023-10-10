@@ -13,6 +13,7 @@ function start() {
         .then(() => {
             console.info("Conectado.");
             habilitarCadastro();
+            habilitarLogin();
         })
         .catch((err) => {
             console.error(err.toString());
@@ -55,4 +56,39 @@ function habilitarCadastro() {
 
         mensagem.innerHTML = msg;
     })
+}
+
+function habilitarLogin() {
+    var formLogin = document.querySelector("#form-login");
+
+    if (formLogin) {
+        var btnAcessar = document.querySelector("#btnAcessar");
+
+        btnAcessar.addEventListener("click", () => {
+            var email = document.querySelector("#email").value;
+            var senha = document.querySelector("#senha").value;
+
+            var usuario = { Email: email, Senha: senha };
+
+            connection.invoke("Login", usuario);
+        });
+    }
+
+    connection.on("UsuarioLogado", (sucesso, usuario, msg) => {
+        if (sucesso) {
+            setUsuarioLogado(usuario);
+            window.location.href = "/Home/Conversacao";
+        } else {
+            var mensagem = document.querySelector("#mensagem");
+            mensagem.innerHTML = msg;
+        }
+    });
+}
+
+function getUsuarioLogado() {
+    return JSON.parse(sessionStorage.getItem("Logado"));
+}
+
+function setUsuarioLogado(usuario) {
+    sessionStorage.setItem("Logado", JSON.stringify(usuario));
 }

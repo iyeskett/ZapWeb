@@ -30,5 +30,24 @@ namespace ZapWeb.Hubs
                 await Clients.Caller.SendAsync("UsuarioCadastrado", false, null, e.Message);
             }
         }
+
+        public async Task Login(Usuario usuario)
+        {
+            try
+            {
+                Usuario? dbUsuario = await _usuarioService.GetUsuarioByEmailAsync(usuario.Email);
+
+                if (dbUsuario == null)
+                    await Clients.Caller.SendAsync("UsuarioLogado", false, null, "Usuário não encontrado.");
+                else if (dbUsuario.Senha == usuario.Senha)
+                    await Clients.Caller.SendAsync("UsuarioLogado", true, dbUsuario, "");
+                else
+                    await Clients.Caller.SendAsync("UsuarioLogado", false, null, "Senha incorreta.");
+            }
+            catch (Exception e)
+            {
+                await Clients.Caller.SendAsync("UsuarioLogado", false, null, e.Message);
+            }
+        }
     }
 }

@@ -6,6 +6,11 @@ namespace ZapWeb.Controllers
 {
     public class HomeController : Controller
     {
+        public IActionResult Index()
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
         public IActionResult Login()
         {
             return View();
