@@ -1,4 +1,58 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿"use strict";
 
-// Write your JavaScript code.
+var connection = new signalR.HubConnectionBuilder().withUrl("/ZapWebHub").withAutomaticReconnect().build();
+
+start();
+
+connection.onclose(async (err) => {
+    await start();
+})
+
+function start() {
+    connection.start()
+        .then(() => {
+            console.info("Conectado.");
+            habilitarCadastro();
+        })
+        .catch((err) => {
+            console.error(err.toString());
+            setTimeout(start(), 5000)
+        });
+}
+
+var formCadastro = document.querySelector("#form-cadastro");
+
+function habilitarCadastro() {
+    if (formCadastro) {
+        var btnCadastrar = document.querySelector("#btnCadastrar");
+
+        btnCadastrar.addEventListener("click", () => {
+            var nome = document.querySelector("#nome").value;
+            var email = document.querySelector("#email").value;
+            var senha = document.querySelector("#senha").value;
+
+            var usuario = { Nome: nome, Email: email, Senha: senha };
+
+            connection.invoke("Cadastrar", usuario)
+                .then(() => {
+                    console.info("Cadastrado com sucesso");
+                })
+                .catch((err) => {
+                    console.error(err.toString());
+                });
+        })
+    }
+
+    connection.on("UsuarioCadastrado", (sucesso, usuario, msg) => {
+        var mensagem = document.querySelector("#mensagem");
+        if (sucesso) {
+            console.info(usuario);
+
+            document.querySelector("#nome").value = "";
+            document.querySelector("#email").value = "";
+            document.querySelector("#senha").value = "";
+        }
+
+        mensagem.innerHTML = msg;
+    })
+}

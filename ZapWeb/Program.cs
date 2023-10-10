@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ZapWeb.Data;
+using ZapWeb.Hubs;
+using ZapWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ZapWebContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("ZapWebContext") ?? throw new InvalidOperationException("Connection string 'ZapWebContext' not found.")));
+
+// SignalR
+builder.Services.AddSignalR();
+
+// Db
+builder.Services.AddScoped<UsuarioService>();
 
 var app = builder.Build();
 
@@ -28,5 +36,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Conversacao}/{id?}");
+
+// RPC
+app.MapHub<ZapWebHub>("/ZapWebHub");
 
 app.Run();

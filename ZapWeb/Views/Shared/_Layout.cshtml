@@ -10,8 +10,8 @@
 <body>
     @RenderBody()
 
+    <script type="text/javascript" src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script type="text/javascript" src="~/js/site.js"></script>
-    <script type="text/javascript" src="~/microsoft/signalr/dist/browser/signalr.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
